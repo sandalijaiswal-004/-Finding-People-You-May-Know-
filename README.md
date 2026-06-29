@@ -42,7 +42,7 @@ But there are cases where we will have more than one "People You May Know". In t
     return [user_id for user_id, _ in sorted_suggestions]
 
     # Load data
-    data = load_data("cleaned_codebook_data.json")
+    data = load_data("massive_data.json")
     user_id = 1  # Example: Finding suggestions for Amit
     recommendations = find_people_you_may_know(user_id, data)
     print(f"People You May Know for User {user_id}: {recommendations}")
