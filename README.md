@@ -1,0 +1,116 @@
+Task 1: Understand the Logic
+How 'People You May Know' Works:
+If User A and User B are not friends but have mutual friends, we suggest User B to User A and vice versa.
+More mutual friends = higher priority recommendation.
+Example:
+
+Amit (ID: 1) is friends with Priya (ID: 2) and Rahul (ID: 3).
+Priya (ID: 2) is friends with Sara (ID: 4).
+Amit is not directly friends with Sara, but they share Priya as a mutual friend.
+Suggest Sara to Amit as "People You May Know".
+But there are cases where we will have more than one "People You May Know". In those cases, greater the number of mutual friends, higher the probability that the user might know the person we are recommending.
+
+# Code Implementation :
+    import json
+    def load_data(filename):
+    with open(filename, "r") as file:
+        return json.load(file)
+
+    def find_people_you_may_know(user_id, data):
+    user_friends = {}
+    for user in data["users"]:
+        user_friends[user["id"]] = set(user["friends"])
+    
+    if user_id not in user_friends:
+        return []
+    
+    direct_friends = user_friends[user_id]
+    suggestions = {}
+    
+    for friend in direct_friends:
+        # For all friends of friend
+        for mutual in user_friends[friend]:
+            # If mutual id is not the same user and not already a direct friend of user
+            if mutual != user_id and mutual not in direct_friends:
+                # Count mutual friends
+                suggestions[mutual] = suggestions.get(mutual, 0) + 1
+    
+    sorted_suggestions = sorted(suggestions.items(), key=lambda x: x[1], reverse=True)
+    return [user_id for user_id, _ in sorted_suggestions]
+
+    # Load data
+    data = load_data("cleaned_codebook_data.json")
+    user_id = 1  # Example: Finding suggestions for Amit
+    recommendations = find_people_you_may_know(user_id, data)
+    print(f"People You May Know for User {user_id}: {recommendations}")
+
+Expected Output:
+If Amit (ID: 1) and Sara (ID: 4) share Priya (ID: 2) as a mutual friend, the output might be:
+
+People You May Know for User 1: [4]
+This suggests that Amit should connect with Sara!
+
+# A Massive data is given below :
+{
+"users": [
+        {"id": 1, "name": "Amit", "friends": [2, 3, 4, 5, 6], "liked_pages": [101, 102]},
+        {"id": 2, "name": "Priya", "friends": [1, 3, 5, 6, 7], "liked_pages": [102, 103]},
+        {"id": 3, "name": "Rahul", "friends": [1, 2, 4, 7, 8], "liked_pages": [101, 103]},
+        {"id": 4, "name": "Sara", "friends": [1, 3, 6, 8, 9], "liked_pages": [104]},
+        {"id": 5, "name": "Neha", "friends": [1, 2, 6, 10, 11], "liked_pages": [102, 105]},
+        {"id": 6, "name": "Vikram", "friends": [1, 2, 4, 5, 12], "liked_pages": [106]},
+        {"id": 7, "name": "Kunal", "friends": [2, 3, 8, 9, 13], "liked_pages": [101, 107]},
+        {"id": 8, "name": "Anjali", "friends": [3, 4, 7, 10, 14], "liked_pages": [103, 108]},
+        {"id": 9, "name": "Ravi", "friends": [4, 7, 10, 11, 15], "liked_pages": [104, 109]},
+        {"id": 10, "name": "Sneha", "friends": [5, 8, 9, 12, 16], "liked_pages": [110]},
+        {"id": 11, "name": "Arjun", "friends": [5, 9, 12, 14, 17], "liked_pages": [105, 111]},
+        {"id": 12, "name": "Meera", "friends": [6, 10, 11, 13, 18], "liked_pages": [112]},
+        {"id": 13, "name": "Kabir", "friends": [7, 12, 14, 15, 19], "liked_pages": [106, 113]},
+        {"id": 14, "name": "Tanya", "friends": [8, 11, 13, 16, 20], "liked_pages": [114]},
+        {"id": 15, "name": "Varun", "friends": [9, 13, 16, 17, 21], "liked_pages": [107, 115]},
+        {"id": 16, "name": "Rhea", "friends": [10, 14, 15, 18, 22], "liked_pages": [116]},
+        {"id": 17, "name": "Ishan", "friends": [11, 15, 18, 19, 23], "liked_pages": [108, 117]},
+        {"id": 18, "name": "Simran", "friends": [12, 16, 17, 20, 24], "liked_pages": [118]},
+        {"id": 19, "name": "Pooja", "friends": [13, 17, 20, 21, 25], "liked_pages": [109, 119]},
+        {"id": 20, "name": "Yash", "friends": [14, 18, 19, 22, 26], "liked_pages": [120]},
+        {"id": 21, "name": "Ananya", "friends": [15, 19, 22, 23, 27], "liked_pages": [110, 121]},
+        {"id": 22, "name": "Dev", "friends": [16, 20, 21, 24, 28], "liked_pages": [122]},
+        {"id": 23, "name": "Aditi", "friends": [17, 21, 24, 25, 29], "liked_pages": [111, 123]},
+        {"id": 24, "name": "Rohan", "friends": [18, 22, 23, 26, 30], "liked_pages": [124]},
+        {"id": 25, "name": "Nisha", "friends": [19, 23, 26, 27, 1], "liked_pages": [112]},
+        {"id": 26, "name": "Gautam", "friends": [20, 24, 25, 28, 3], "liked_pages": [125]},
+        {"id": 27, "name": "Kriti", "friends": [21, 25, 28, 29, 5], "liked_pages": [113]},
+        {"id": 28, "name": "Harsh", "friends": [22, 26, 27, 30, 7], "liked_pages": [126]},
+        {"id": 29, "name": "Naveen", "friends": [23, 27, 30, 9, 11], "liked_pages": [114]},
+        {"id": 30, "name": "Ishita", "friends": [24, 28, 29, 13, 15], "liked_pages": [127]}
+    ],
+    "pages": [
+        {"id": 101, "name": "Python Developers"},
+        {"id": 102, "name": "Data Science Enthusiasts"},
+        {"id": 103, "name": "AI & ML Community"},
+        {"id": 104, "name": "Web Dev Hub"},
+        {"id": 105, "name": "Blockchain Innovators"},
+        {"id": 106, "name": "Cybersecurity Experts"},
+        {"id": 107, "name": "Cloud Computing Pros"},
+        {"id": 108, "name": "Competitive Programmers"},
+        {"id": 109, "name": "Startup Founders"},
+        {"id": 110, "name": "UI/UX Designers"},
+        {"id": 111, "name": "Full-Stack Developers"},
+        {"id": 112, "name": "Tech Entrepreneurs"},
+        {"id": 113, "name": "IoT Enthusiasts"},
+        {"id": 114, "name": "Game Developers"},
+        {"id": 115, "name": "Big Data Analysts"},
+        {"id": 116, "name": "DevOps Engineers"},
+        {"id": 117, "name": "Cloud AI Researchers"},
+        {"id": 118, "name": "5G & Edge Computing"},
+        {"id": 119, "name": "AR/VR Creators"},
+        {"id": 120, "name": "Freelance Coders"},
+        {"id": 121, "name": "Open Source Contributors"},
+        {"id": 122, "name": "Algorithmic Traders"},
+        {"id": 123, "name": "Low-Code Developers"},
+        {"id": 124, "name": "Cyber Ethics Forum"},
+        {"id": 125, "name": "AI Ethics & Policy"},
+        {"id": 126, "name": "Digital Nomads"},
+        {"id": 127, "name": "Women in Tech"}
+    ]
+}
