@@ -1,3 +1,5 @@
+In social networks, this feature helps users connect with others by suggesting friends based on mutual connections. To analyze mutual friends and recommend potential connections. by using pure python...!!!
+
 Task 1: Understand the Logic
 How 'People You May Know' Works:
 If User A and User B are not friends but have mutual friends, we suggest User B to User A and vice versa.
