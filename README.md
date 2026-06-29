@@ -51,6 +51,7 @@ Expected Output:
 If Amit (ID: 1) and Sara (ID: 4) share Priya (ID: 2) as a mutual friend, the output might be:
 
 People You May Know for User 1: [4]
+
 This suggests that Amit should connect with Sara!
 
 # A Massive data is given below :
