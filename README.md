@@ -1,5 +1,5 @@
 # Finding "People You May Know""
-In social networks, this feature helps users connect with others by suggesting friends based on mutual connections. To analyze mutual friends and recommend potential connections. by using pure python...!!!
+In social networks, this feature helps users connect with others by suggesting friends based on mutual connections. To analyze mutual friends and recommend potential connections. by using Pure PYTHON...!!!
 
 Task 1: Understand the Logic
 How 'People You May Know' Works:
